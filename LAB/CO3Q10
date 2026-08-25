@@ -1,0 +1,14 @@
+% Backward Chaining
+
+bird(parrot).
+bird(eagle).
+
+has_wings(parrot).
+has_wings(eagle).
+
+can_fly(Bird) :-
+    bird(Bird),
+    has_wings(Bird).
+
+is_bird_can_fly(Bird) :-
+    can_fly(Bird).
