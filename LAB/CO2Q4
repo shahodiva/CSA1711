@@ -1,0 +1,63 @@
+# Alpha-Beta Pruning
+
+def alphabeta(depth, node_index, maximizing_player,
+              values, alpha, beta, height):
+
+    if depth == height:
+        return values[node_index]
+
+    if maximizing_player:
+        best = -9999
+
+        for child in range(2):
+            value = alphabeta(
+                depth + 1,
+                node_index * 2 + child,
+                False,
+                values,
+                alpha,
+                beta,
+                height
+            )
+
+            best = max(best, value)
+            alpha = max(alpha, best)
+
+            if beta <= alpha:
+                break
+
+        return best
+
+    else:
+        best = 9999
+
+        for child in range(2):
+            value = alphabeta(
+                depth + 1,
+                node_index * 2 + child,
+                True,
+                values,
+                alpha,
+                beta,
+                height
+            )
+
+            best = min(best, value)
+            beta = min(beta, best)
+
+            if beta <= alpha:
+                break
+
+        return best
+
+
+values = [3, 5, 2, 9, 12, 5, 23, 23]
+
+height = 3
+
+result = alphabeta(
+    0, 0, True, values,
+    -9999, 9999, height
+)
+
+print("Optimal value:", result)
