@@ -1,0 +1,42 @@
+% Best First Search
+
+edge(a, b, 2).
+edge(a, c, 5).
+edge(b, d, 4).
+edge(b, e, 1).
+edge(c, f, 2).
+edge(c, g, 3).
+edge(e, g, 2).
+
+heuristic(a, 7).
+heuristic(b, 5).
+heuristic(c, 6).
+heuristic(d, 4).
+heuristic(e, 2).
+heuristic(f, 3).
+heuristic(g, 0).
+
+best_first(Start, Goal, Path) :-
+    search([Start], Goal, [], Path).
+
+search([Goal|_], Goal, _, [Goal]).
+
+search([Current|Rest], Goal, Visited, [Current|Path]) :-
+    findall(
+        H-Next,
+        (
+            edge(Current, Next, _),
+            \+ member(Next, Visited),
+            heuristic(Next, H)
+        ),
+        Children
+    ),
+    sort(Children, Sorted),
+    extract_nodes(Sorted, Nodes),
+    append(Nodes, Rest, NewQueue),
+    search(NewQueue, Goal, [Current|Visited], Path).
+
+extract_nodes([], []).
+
+extract_nodes([_-Node|T], [Node|R]) :-
+    extract_nodes(T, R).
