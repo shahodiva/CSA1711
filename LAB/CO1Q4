@@ -1,0 +1,31 @@
+from itertools import permutations
+
+word1 = "SEND"
+word2 = "MORE"
+result = "MONEY"
+
+letters = set(word1 + word2 + result)
+
+for p in permutations(range(10), len(letters)):
+    mapping = dict(zip(letters, p))
+
+    if mapping["S"] == 0 or mapping["M"] == 0:
+        continue
+
+    def value(word):
+        number = 0
+        for ch in word:
+            number = number * 10 + mapping[ch]
+        return number
+
+    num1 = value(word1)
+    num2 = value(word2)
+    num3 = value(result)
+
+    if num1 + num2 == num3:
+        print("Solution:")
+        print("SEND =", num1)
+        print("MORE =", num2)
+        print("MONEY =", num3)
+        print(mapping)
+        break
