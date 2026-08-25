@@ -1,0 +1,34 @@
+# Decision Tree using Scikit-learn
+
+from sklearn.tree import DecisionTreeClassifier
+
+# Features:
+# [Weather, Temperature]
+# Weather: 0 = Sunny, 1 = Rainy
+# Temperature: 0 = Cold, 1 = Hot
+
+X = [
+    [0, 1],
+    [0, 0],
+    [1, 0],
+    [1, 1],
+    [0, 1],
+    [1, 0]
+]
+
+# 0 = No, 1 = Yes
+y = [1, 1, 0, 1, 1, 0]
+
+model = DecisionTreeClassifier()
+
+model.fit(X, y)
+
+weather = int(input("Enter weather (0=Sunny, 1=Rainy): "))
+temperature = int(input("Enter temperature (0=Cold, 1=Hot): "))
+
+prediction = model.predict([[weather, temperature]])
+
+if prediction[0] == 1:
+    print("Prediction: Play")
+else:
+    print("Prediction: Do Not Play")
