@@ -1,0 +1,25 @@
+% Monkey Banana Problem
+
+% Initial state:
+% Monkey is at door, box is at window,
+% banana is hanging from ceiling.
+
+state(at(door), on_floor, at(window), not_having).
+
+% Monkey walks from one place to another.
+move(at(X), on_floor, Box, Banana,
+     at(Y), on_floor, Box, Banana) :-
+    X \= Y.
+
+% Monkey pushes the box.
+push(at(X), on_floor, at(X), Banana,
+     at(Y), on_floor, at(Y), Banana) :-
+    X \= Y.
+
+% Monkey climbs onto the box.
+climb(at(X), on_floor, at(X), Banana,
+     at(X), on_box, at(X), Banana).
+
+% Monkey gets the banana.
+get_banana(at(X), on_box, at(X), not_having,
+           at(X), on_box, at(X), having).
