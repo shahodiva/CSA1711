@@ -1,0 +1,22 @@
+% Student-Teacher-Subject Database
+
+student(ravi, cse101).
+student(anu, cse102).
+student(kumar, cse103).
+student(priya, cse101).
+
+teacher(prof_kumar, cse101).
+teacher(prof_anitha, cse102).
+teacher(prof_ravi, cse103).
+
+subject(cse101, artificial_intelligence).
+subject(cse102, database_management).
+subject(cse103, computer_networks).
+
+student_subject(Student, Subject) :-
+    student(Student, Code),
+    subject(Code, Subject).
+
+subject_teacher(Subject, Teacher) :-
+    subject(Code, Subject),
+    teacher(Teacher, Code).
