@@ -1,0 +1,63 @@
+from collections import deque
+
+def is_valid(m_left, c_left, m_right, c_right):
+    if m_left < 0 or c_left < 0 or m_right < 0 or c_right < 0:
+        return False
+
+    if m_left > 0 and m_left < c_left:
+        return False
+
+    if m_right > 0 and m_right < c_right:
+        return False
+
+    return True
+
+
+def solve():
+    start = (3, 3, 0)
+    goal = (0, 0, 1)
+
+    # State = (missionaries_left, cannibals_left, boat_side)
+    # boat_side: 0 = left, 1 = right
+
+    moves = [
+        (1, 0), (2, 0),
+        (0, 1), (0, 2),
+        (1, 1)
+    ]
+
+    queue = deque([(start, [start])])
+    visited = {start}
+
+    while queue:
+        state, path = queue.popleft()
+
+        if state == goal:
+            print("Solution:")
+            for s in path:
+                print(s)
+            return
+
+        m, c, boat = state
+
+        for dm, dc in moves:
+            if boat == 0:
+                nm = m - dm
+                nc = c - dc
+                nb = 1
+            else:
+                nm = m + dm
+                nc = c + dc
+                nb = 0
+
+            new_state = (nm, nc, nb)
+
+            if is_valid(nm, nc, 3-nm, 3-nc):
+                if new_state not in visited:
+                    visited.add(new_state)
+                    queue.append((new_state, path + [new_state]))
+
+    print("No solution.")
+
+
+solve()
