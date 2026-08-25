@@ -1,0 +1,25 @@
+% Forward Chaining
+
+fact(sunny).
+fact(warm).
+
+rule(go_outside) :-
+    fact(sunny),
+    fact(warm).
+
+rule(play_cricket) :-
+    fact(sunny),
+    fact(warm).
+
+rule(enjoy_day) :-
+    fact(go_outside).
+
+forward_chaining :-
+    rule(go_outside),
+    assertz(fact(go_outside)),
+
+    rule(play_cricket),
+    assertz(fact(play_cricket)),
+
+    rule(enjoy_day),
+    assertz(fact(enjoy_day)).
