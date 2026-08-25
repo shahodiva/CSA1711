@@ -1,0 +1,24 @@
+% Medical Diagnosis System
+
+symptom(ravi, fever).
+symptom(ravi, cough).
+symptom(ravi, cold).
+
+symptom(anu, headache).
+symptom(anu, fever).
+
+symptom(kumar, cough).
+symptom(kumar, chest_pain).
+
+diagnosis(Person, flu) :-
+    symptom(Person, fever),
+    symptom(Person, cough),
+    symptom(Person, cold).
+
+diagnosis(Person, malaria) :-
+    symptom(Person, fever),
+    symptom(Person, headache).
+
+diagnosis(Person, respiratory_problem) :-
+    symptom(Person, cough),
+    symptom(Person, chest_pain).
