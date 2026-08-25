@@ -1,0 +1,40 @@
+% Family Tree
+
+male(ram).
+male(shyam).
+male(arun).
+male(kiran).
+
+female(sita).
+female(gita).
+female(rita).
+female(anu).
+
+parent(ram, shyam).
+parent(sita, shyam).
+
+parent(ram, gita).
+parent(sita, gita).
+
+parent(shyam, arun).
+parent(rita, arun).
+
+parent(shyam, anu).
+parent(rita, anu).
+
+father(X, Y) :-
+    male(X),
+    parent(X, Y).
+
+mother(X, Y) :-
+    female(X),
+    parent(X, Y).
+
+grandparent(X, Z) :-
+    parent(X, Y),
+    parent(Y, Z).
+
+sibling(X, Y) :-
+    parent(P, X),
+    parent(P, Y),
+    X \= Y.
