@@ -1,0 +1,15 @@
+% Diet Recommendation System
+
+diet(diabetes, [vegetables, oats, whole_grains, fruits]).
+diet(hypertension, [vegetables, fruits, low_salt_food]).
+diet(obesity, [vegetables, salads, whole_grains, low_fat_food]).
+diet(anemia, [spinach, beetroot, beans, iron_rich_food]).
+diet(fever, [fruits, soup, rice, plenty_of_water]).
+
+suggest_diet(Disease) :-
+    diet(Disease, Foods),
+    write('Recommended diet for '),
+    write(Disease),
+    write(':'),
+    nl,
+    write(Foods).
