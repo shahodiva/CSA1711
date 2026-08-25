@@ -1,0 +1,10 @@
+% Name and Date of Birth Database
+
+person(ravi, date(10, 5, 2002)).
+person(anu, date(15, 8, 2001)).
+person(kumar, date(20, 3, 2003)).
+person(priya, date(12, 11, 2002)).
+person(arun, date(25, 1, 2000)).
+
+find_dob(Name, DOB) :-
+    person(Name, DOB).
