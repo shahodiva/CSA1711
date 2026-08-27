@@ -1,0 +1,3907 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NeuroLearn AI | Reinforcement Learning Lab</title>
+
+    <meta name="description" content="Professional Reinforcement Learning Q-Learning simulation dashboard using HTML CSS and JavaScript.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+    <style>
+        /* =========================================================
+   ROOT VARIABLES
+========================================================= */
+        
+        :root {
+            --bg: #07111f;
+            --bg2: #0b1728;
+            --panel: #0e1d31;
+            --panel2: #12243b;
+            --primary: #7c3aed;
+            --primary2: #a855f7;
+            --cyan: #06b6d4;
+            --blue: #3b82f6;
+            --green: #22c55e;
+            --green2: #10b981;
+            --red: #ef4444;
+            --orange: #f59e0b;
+            --pink: #ec4899;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --border: rgba(148, 163, 184, .13);
+            --shadow: 0 20px 60px rgba(0, 0, 0, .25);
+        }
+        /* =========================================================
+   RESET
+========================================================= */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: "Inter", sans-serif;
+            background: radial-gradient( circle at 10% 10%, rgba(124, 58, 237, .12), transparent 30%), radial-gradient( circle at 90% 20%, rgba(6, 182, 212, .08), transparent 30%), var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+        
+        button {
+            cursor: pointer;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        /* =========================================================
+   SCROLLBAR
+========================================================= */
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #050b14;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 20px;
+        }
+        /* =========================================================
+   TOP BAR
+========================================================= */
+        
+        .topbar {
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient( 90deg, #312e81, #7c3aed, #0e7490);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .3px;
+        }
+        
+        .topbar i {
+            margin-right: 7px;
+            color: #facc15;
+        }
+        /* =========================================================
+   HEADER
+========================================================= */
+        
+        header {
+            height: 76px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(7, 17, 31, .88);
+            backdrop-filter: blur(18px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-inner {
+            max-width: 1450px;
+            height: 100%;
+            margin: auto;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+        /* =========================================================
+   LOGO
+========================================================= */
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient( 135deg, var(--primary), var(--cyan));
+            box-shadow: 0 8px 30px rgba(124, 58, 237, .35);
+            font-size: 19px;
+        }
+        
+        .logo-text {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: -.5px;
+        }
+        
+        .logo-text span {
+            color: #a78bfa;
+        }
+        
+        .logo-sub {
+            display: block;
+            color: #64748b;
+            font-size: 8px;
+            letter-spacing: 1.7px;
+            font-weight: 700;
+        }
+        /* =========================================================
+   NAVIGATION
+========================================================= */
+        
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        nav a {
+            color: #94a3b8;
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            transition: .25s;
+        }
+        
+        nav a:hover,
+        nav a.active {
+            color: white;
+            background: rgba(124, 58, 237, .15);
+        }
+        /* =========================================================
+   HEADER ACTION
+========================================================= */
+        
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .03);
+            color: #94a3b8;
+            transition: .25s;
+        }
+        
+        .icon-btn:hover {
+            color: white;
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        /* =========================================================
+   MAIN
+========================================================= */
+        
+        main {
+            max-width: 1450px;
+            margin: auto;
+            padding: 30px 28px 70px;
+        }
+        /* =========================================================
+   PAGE HERO
+========================================================= */
+        
+        .page-hero {
+            padding: 35px 0 30px;
+        }
+        
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: #86efac;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .7px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 12px #22c55e;
+            animation: pulse 1.6s infinite;
+        }
+        
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: .4;
+                transform: scale(.7);
+            }
+        }
+        
+        .page-hero h1 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: clamp(30px, 4vw, 50px);
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 13px;
+        }
+        
+        .gradient-text {
+            background: linear-gradient( 90deg, #a78bfa, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .page-hero p {
+            max-width: 760px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+        /* =========================================================
+   DASHBOARD GRID
+========================================================= */
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: minmax(480px, 1.15fr) minmax(420px, .85fr);
+            gap: 20px;
+        }
+        /* =========================================================
+   PANEL
+========================================================= */
+        
+        .panel {
+            background: linear-gradient( 145deg, rgba(18, 36, 59, .9), rgba(10, 25, 42, .9));
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            padding: 17px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .panel-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(124, 58, 237, .15);
+            color: #a78bfa;
+            font-size: 12px;
+        }
+        
+        .panel-title h2 {
+            font-size: 13px;
+            font-weight: 700;
+        }
+        
+        .panel-title span {
+            display: block;
+            color: #64748b;
+            font-size: 9px;
+            margin-top: 1px;
+        }
+        
+        .panel-body {
+            padding: 20px;
+        }
+        /* =========================================================
+   ENVIRONMENT
+========================================================= */
+        
+        .environment-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        
+        .game-grid {
+            width: min(100%, 470px);
+            aspect-ratio: 1;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+            gap: 4px;
+            padding: 5px;
+            border-radius: 14px;
+            background: #050c17;
+            border: 1px solid rgba(148, 163, 184, .12);
+        }
+        
+        .cell {
+            position: relative;
+            border-radius: 6px;
+            background: #12243a;
+            border: 1px solid rgba(148, 163, 184, .05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            transition: background .2s, transform .2s;
+        }
+        
+        .cell:hover {
+            background: #1b3552;
+        }
+        
+        .cell.obstacle {
+            background: linear-gradient( 135deg, #7f1d1d, #dc2626);
+            color: #fecaca;
+        }
+        
+        .cell.goal {
+            background: linear-gradient( 135deg, #065f46, #10b981);
+            color: white;
+            box-shadow: inset 0 0 20px rgba(34, 197, 94, .25);
+        }
+        
+        .cell.start {
+            background: rgba(59, 130, 246, .22);
+            color: #60a5fa;
+        }
+        
+        .cell.agent {
+            background: linear-gradient( 135deg, #7c3aed, #06b6d4);
+            color: white;
+            box-shadow: 0 0 18px rgba(124, 58, 237, .6);
+            z-index: 3;
+            transform: scale(.93);
+        }
+        
+        .agent-icon {
+            animation: agentFloat .7s infinite alternate;
+        }
+        
+        @keyframes agentFloat {
+            from {
+                transform: translateY(2px);
+            }
+            to {
+                transform: translateY(-2px);
+            }
+        }
+        /* =========================================================
+   ENVIRONMENT LEGEND
+========================================================= */
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #64748b;
+            font-size: 9px;
+        }
+        
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+        }
+        
+        .legend-agent {
+            background: #8b5cf6;
+        }
+        
+        .legend-goal {
+            background: #10b981;
+        }
+        
+        .legend-wall {
+            background: #dc2626;
+        }
+        
+        .legend-start {
+            background: #3b82f6;
+        }
+        /* =========================================================
+   CONTROL BAR
+========================================================= */
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 18px;
+        }
+        
+        .control-btn {
+            border: none;
+            border-radius: 9px;
+            padding: 10px 8px;
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid var(--border);
+            font-size: 10px;
+            font-weight: 700;
+            transition: .25s;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, .08);
+            transform: translateY(-1px);
+        }
+        
+        .control-btn.primary {
+            background: linear-gradient( 135deg, #7c3aed, #8b5cf6);
+            color: white;
+            border: none;
+        }
+        
+        .control-btn.success {
+            background: rgba(16, 185, 129, .12);
+            color: #6ee7b7;
+            border-color: rgba(16, 185, 129, .2);
+        }
+        
+        .control-btn.danger {
+            background: rgba(239, 68, 68, .1);
+            color: #fca5a5;
+        }
+        /* =========================================================
+   PARAMETERS
+========================================================= */
+        
+        .parameter-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .parameter {
+            padding: 13px;
+            border-radius: 11px;
+            background: rgba(255, 255, 255, .025);
+            border: 1px solid var(--border);
+        }
+        
+        .parameter label {
+            display: block;
+            color: #64748b;
+            font-size: 9px;
+            margin-bottom: 7px;
+        }
+        
+        .parameter-value {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .parameter input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+        }
+        
+        .value {
+            color: #c4b5fd;
+            font-size: 11px;
+            font-weight: 800;
+        }
+        /* =========================================================
+   STATS
+========================================================= */
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .stat {
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .025);
+            border: 1px solid var(--border);
+        }
+        
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 7px;
+        }
+        
+        .stat-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+        
+        .stat:nth-child(1) .stat-icon {
+            background: rgba(124, 58, 237, .15);
+            color: #a78bfa;
+        }
+        
+        .stat:nth-child(2) .stat-icon {
+            background: rgba(6, 182, 212, .12);
+            color: #67e8f9;
+        }
+        
+        .stat:nth-child(3) .stat-icon {
+            background: rgba(34, 197, 94, .12);
+            color: #86efac;
+        }
+        
+        .stat:nth-child(4) .stat-icon {
+            background: rgba(245, 158, 11, .12);
+            color: #fcd34d;
+        }
+        
+        .stat-label {
+            color: #64748b;
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+        
+        .stat-number {
+            font-size: 20px;
+            font-weight: 800;
+            font-family: "Space Grotesk", sans-serif;
+        }
+        /* =========================================================
+   RIGHT PANEL STACK
+========================================================= */
+        
+        .right-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        /* =========================================================
+   TRAINING PROGRESS
+========================================================= */
+        
+        .progress-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .progress-info span {
+            font-size: 9px;
+            color: #64748b;
+        }
+        
+        .progress-info strong {
+            font-size: 11px;
+            color: #c4b5fd;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #091524;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 20px;
+            background: linear-gradient( 90deg, #7c3aed, #06b6d4);
+            transition: width .2s ease;
+        }
+        /* =========================================================
+   REWARD DISPLAY
+========================================================= */
+        
+        .reward-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 12px;
+            background: linear-gradient( 90deg, rgba(124, 58, 237, .08), rgba(6, 182, 212, .05));
+            border: 1px solid rgba(124, 58, 237, .12);
+        }
+        
+        .reward-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .reward-symbol {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(245, 158, 11, .12);
+            color: #fbbf24;
+        }
+        
+        .reward-title {
+            font-size: 10px;
+            font-weight: 700;
+        }
+        
+        .reward-sub {
+            font-size: 8px;
+            color: #64748b;
+        }
+        
+        .reward-number {
+            font-size: 20px;
+            font-weight: 900;
+            color: #fbbf24;
+        }
+        /* =========================================================
+   CHART
+========================================================= */
+        
+        .chart-container {
+            height: 210px;
+            position: relative;
+            margin-top: 10px;
+        }
+        
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+        /* =========================================================
+   Q TABLE
+========================================================= */
+        
+        .qtable-wrapper {
+            overflow: auto;
+            max-height: 370px;
+        }
+        
+        .qtable {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 500px;
+        }
+        
+        .qtable th {
+            background: #091524;
+            color: #64748b;
+            font-size: 8px;
+            padding: 9px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+        }
+        
+        .qtable td {
+            border: 1px solid rgba(148, 163, 184, .06);
+            padding: 7px;
+            text-align: center;
+            font-size: 8px;
+            color: #94a3b8;
+        }
+        
+        .q-positive {
+            color: #4ade80 !important;
+        }
+        
+        .q-negative {
+            color: #f87171 !important;
+        }
+        
+        .q-best {
+            background: rgba(124, 58, 237, .15);
+            color: #c4b5fd !important;
+            font-weight: 800;
+        }
+        /* =========================================================
+   EPISODE LOG
+========================================================= */
+        
+        .log {
+            max-height: 260px;
+            overflow: auto;
+        }
+        
+        .log-row {
+            display: grid;
+            grid-template-columns: 55px 70px 70px 1fr;
+            gap: 10px;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(148, 163, 184, .06);
+            font-size: 9px;
+        }
+        
+        .log-row span:first-child {
+            color: #c4b5fd;
+            font-weight: 700;
+        }
+        
+        .log-success {
+            color: #4ade80;
+        }
+        
+        .log-fail {
+            color: #f87171;
+        }
+        /* =========================================================
+   EXPLANATION
+========================================================= */
+        
+        .explanation {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .explain-card {
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, .025);
+            border: 1px solid var(--border);
+            transition: .25s;
+        }
+        
+        .explain-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(124, 58, 237, .3);
+        }
+        
+        .explain-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(124, 58, 237, .12);
+            color: #a78bfa;
+            margin-bottom: 12px;
+        }
+        
+        .explain-card h3 {
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+        
+        .explain-card p {
+            color: #64748b;
+            font-size: 9px;
+            line-height: 1.7;
+        }
+        /* =========================================================
+   FOOTER
+========================================================= */
+        
+        footer {
+            border-top: 1px solid var(--border);
+            background: #050c16;
+        }
+        
+        .footer-inner {
+            max-width: 1450px;
+            margin: auto;
+            padding: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        .footer-copy {
+            color: #475569;
+            font-size: 9px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .footer-links a {
+            color: #64748b;
+            font-size: 9px;
+        }
+        
+        .footer-links a:hover {
+            color: #a78bfa;
+        }
+        /* =========================================================
+   TOAST
+========================================================= */
+        
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            padding: 13px 17px;
+            border-radius: 10px;
+            background: #172554;
+            border: 1px solid rgba(129, 140, 248, .25);
+            color: #c7d2fe;
+            font-size: 10px;
+            font-weight: 600;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, .4);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: .3s;
+            z-index: 5000;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        /* =========================================================
+   RESPONSIVE
+========================================================= */
+        
+        @media(max-width:1100px) {
+            nav {
+                display: none;
+            }
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media(max-width:700px) {
+            main {
+                padding: 20px 15px 50px;
+            }
+            .header-inner {
+                padding: 0 15px;
+            }
+            .logo-sub {
+                display: none;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .controls {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .parameter-grid {
+                grid-template-columns: 1fr;
+            }
+            .explanation {
+                grid-template-columns: 1fr;
+            }
+            .footer-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+     TOP BAR
+========================================================= -->
+
+    <div class="topbar">
+
+        <i class="fa-solid fa-brain"></i> NEUROLEARN AI LAB • REINFORCEMENT LEARNING SIMULATION
+
+    </div>
+
+
+    <!-- =========================================================
+     HEADER
+========================================================= -->
+
+    <header>
+
+        <div class="header-inner">
+
+
+            <a href="#" class="logo">
+
+                <div class="logo-icon">
+
+                    <i class="fa-solid fa-robot"></i>
+
+                </div>
+
+
+                <div>
+
+                    <div class="logo-text">
+
+                        Neuro<span>Learn</span>
+
+                    </div>
+
+                    <span class="logo-sub">
+
+                REINFORCEMENT LEARNING LAB
+
+            </span>
+
+                </div>
+
+            </a>
+
+
+            <nav>
+
+                <a href="#environment" class="active">
+
+            Environment
+
+        </a>
+
+                <a href="#training">
+
+            Training
+
+        </a>
+
+                <a href="#qtable">
+
+            Q-Table
+
+        </a>
+
+                <a href="#analytics">
+
+            Analytics
+
+        </a>
+
+                <a href="#about">
+
+            About
+
+        </a>
+
+            </nav>
+
+
+            <div class="header-actions">
+
+                <button class="icon-btn" onclick="showToast('🤖 Agent dashboard is ready.')">
+
+            <i class="fa-solid fa-robot"></i>
+
+        </button>
+
+
+                <button class="icon-btn" onclick="showToast('⚙️ Simulation settings are available below.')">
+
+            <i class="fa-solid fa-gear"></i>
+
+        </button>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================================
+     MAIN
+========================================================= -->
+
+    <main>
+
+
+        <!-- =========================================================
+     HERO
+========================================================= -->
+
+        <section class="page-hero">
+
+            <div class="status">
+
+                <span class="status-dot"></span> LIVE SIMULATION READY
+
+            </div>
+
+
+            <h1>
+
+                Train an AI Agent with
+
+                <span class="gradient-text">
+
+            Reinforcement Learning
+
+        </span>
+
+            </h1>
+
+
+            <p>
+
+                A professional interactive Q-Learning laboratory. Watch an intelligent agent explore a grid environment, learn from rewards and penalties, update its Q-table, and gradually discover the optimal path to the goal.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =========================================================
+     DASHBOARD
+========================================================= -->
+
+        <div class="dashboard">
+
+
+            <!-- =========================================================
+     LEFT SIDE
+========================================================= -->
+
+            <div>
+
+
+                <!-- =========================================================
+     ENVIRONMENT PANEL
+========================================================= -->
+
+                <section class="panel" id="environment">
+
+
+                    <div class="panel-header">
+
+                        <div class="panel-title">
+
+                            <div class="panel-icon">
+
+                                <i class="fa-solid fa-map"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Grid World Environment
+                                </h2>
+
+                                <span>
+                10 × 10 reinforcement learning environment
+            </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <span style="
+            color:#64748b;
+            font-size:9px;
+        ">
+
+        EPISODE
+        <strong
+            id="episodeBadge"
+            style="color:#c4b5fd">
+
+            0
+
+        </strong>
+
+    </span>
+
+                    </div>
+
+
+                    <div class="panel-body">
+
+
+                        <div class="environment-wrap">
+
+                            <div class="game-grid" id="gameGrid">
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="legend">
+
+                            <div class="legend-item">
+
+                                <span class="legend-color legend-agent"></span> AI Agent
+
+                            </div>
+
+
+                            <div class="legend-item">
+
+                                <span class="legend-color legend-goal"></span> Goal
+
+                            </div>
+
+
+                            <div class="legend-item">
+
+                                <span class="legend-color legend-wall"></span> Obstacle
+
+                            </div>
+
+
+                            <div class="legend-item">
+
+                                <span class="legend-color legend-start"></span> Start
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="controls">
+
+                            <button class="control-btn primary" onclick="trainOneEpisode()">
+
+            <i class="fa-solid fa-play"></i>
+
+            Train Episode
+
+        </button>
+
+
+                            <button class="control-btn success" onclick="startTraining()">
+
+            <i class="fa-solid fa-bolt"></i>
+
+            Auto Train
+
+        </button>
+
+
+                            <button class="control-btn" onclick="runBestPath()">
+
+            <i class="fa-solid fa-route"></i>
+
+            Best Path
+
+        </button>
+
+
+                            <button class="control-btn danger" onclick="resetTraining()">
+
+            <i class="fa-solid fa-rotate-left"></i>
+
+            Reset
+
+        </button>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =========================================================
+     PARAMETERS
+========================================================= -->
+
+                <section class="panel" style="margin-top:20px;">
+
+                    <div class="panel-header">
+
+                        <div class="panel-title">
+
+                            <div class="panel-icon">
+
+                                <i class="fa-solid fa-sliders"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Learning Parameters
+                                </h2>
+
+                                <span>
+                Configure the Q-Learning algorithm
+            </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel-body">
+
+                        <div class="parameter-grid">
+
+
+                            <div class="parameter">
+
+                                <label>
+                Learning Rate α
+            </label>
+
+                                <div class="parameter-value">
+
+                                    <input id="learningRate" type="range" min="0.01" max="1" step="0.01" value="0.7">
+
+                                    <span class="value" id="learningRateValue">
+
+                    0.70
+
+                </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="parameter">
+
+                                <label>
+                Discount Factor γ
+            </label>
+
+                                <div class="parameter-value">
+
+                                    <input id="discountFactor" type="range" min="0" max="1" step="0.01" value="0.9">
+
+                                    <span class="value" id="discountFactorValue">
+
+                    0.90
+
+                </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="parameter">
+
+                                <label>
+                Exploration ε
+            </label>
+
+                                <div class="parameter-value">
+
+                                    <input id="epsilon" type="range" min="0" max="1" step="0.01" value="0.3">
+
+                                    <span class="value" id="epsilonValue">
+
+                    0.30
+
+                </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="parameter">
+
+                                <label>
+                Training Episodes
+            </label>
+
+                                <div class="parameter-value">
+
+                                    <input id="episodeLimit" type="range" min="10" max="1000" step="10" value="300">
+
+                                    <span class="value" id="episodeLimitValue">
+
+                    300
+
+                </span>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =========================================================
+     STATS
+========================================================= -->
+
+                <section class="panel" style="margin-top:20px;">
+
+                    <div class="panel-header">
+
+                        <div class="panel-title">
+
+                            <div class="panel-icon">
+
+                                <i class="fa-solid fa-chart-simple"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Agent Performance
+                                </h2>
+
+                                <span>
+                Real-time training statistics
+            </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel-body">
+
+
+                        <div class="stats-grid">
+
+
+                            <div class="stat">
+
+                                <div class="stat-top">
+
+                                    <span class="stat-label">
+                Episodes
+            </span>
+
+                                    <div class="stat-icon">
+
+                                        <i class="fa-solid fa-layer-group"></i>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="stat-number" id="episodes">
+
+                                    0
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="stat">
+
+                                <div class="stat-top">
+
+                                    <span class="stat-label">
+                Success
+            </span>
+
+                                    <div class="stat-icon">
+
+                                        <i class="fa-solid fa-trophy"></i>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="stat-number" id="successRate">
+
+                                    0%
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="stat">
+
+                                <div class="stat-top">
+
+                                    <span class="stat-label">
+                Avg Reward
+            </span>
+
+                                    <div class="stat-icon">
+
+                                        <i class="fa-solid fa-star"></i>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="stat-number" id="avgReward">
+
+                                    0.00
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="stat">
+
+                                <div class="stat-top">
+
+                                    <span class="stat-label">
+                Best Steps
+            </span>
+
+                                    <div class="stat-icon">
+
+                                        <i class="fa-solid fa-shoe-prints"></i>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="stat-number" id="bestSteps">
+
+                                    --
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+
+
+            <!-- =========================================================
+     RIGHT SIDE
+========================================================= -->
+
+            <div class="right-stack">
+
+
+                <!-- =========================================================
+     TRAINING PANEL
+========================================================= -->
+
+                <section class="panel" id="training">
+
+
+                    <div class="panel-header">
+
+                        <div class="panel-title">
+
+                            <div class="panel-icon">
+
+                                <i class="fa-solid fa-brain"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Training Monitor
+                                </h2>
+
+                                <span>
+                Q-Learning progress
+            </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div id="trainingStatus" style="
+            color:#64748b;
+            font-size:9px;
+        ">
+
+                            Idle
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel-body">
+
+
+                        <div class="progress-info">
+
+                            <span>
+        Training Progress
+    </span>
+
+                            <strong id="progressText">
+
+        0%
+
+    </strong>
+
+                        </div>
+
+
+                        <div class="progress-bar">
+
+                            <div class="progress-fill" id="progressFill">
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="reward-display">
+
+                            <div class="reward-left">
+
+                                <div class="reward-symbol">
+
+                                    <i class="fa-solid fa-gem"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <div class="reward-title">
+
+                                        Current Episode Reward
+
+                                    </div>
+
+                                    <div class="reward-sub">
+
+                                        Environment feedback
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="reward-number" id="currentReward">
+
+                                0
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =========================================================
+     CHART PANEL
+========================================================= -->
+
+                <section class="panel" id="analytics">
+
+
+                    <div class="panel-header">
+
+                        <div class="panel-title">
+
+                            <div class="panel-icon">
+
+                                <i class="fa-solid fa-chart-line"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Reward Analytics
+                                </h2>
+
+                                <span>
+                Episode reward history
+            </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel-body">
+
+                        <div class="chart-container">
+
+                            <canvas id="rewardChart"></canvas>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =========================================================
+     Q TABLE PANEL
+========================================================= -->
+
+                <section class="panel" id="qtable">
+
+
+                    <div class="panel-header">
+
+                        <div class="panel-title">
+
+                            <div class="panel-icon">
+
+                                <i class="fa-solid fa-table-cells"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Q-Table
+                                </h2>
+
+                                <span>
+                Learned action values
+            </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel-body">
+
+
+                        <div class="qtable-wrapper">
+
+                            <table class="qtable">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            State
+                                        </th>
+
+                                        <th>
+                                            ↑ UP
+                                        </th>
+
+                                        <th>
+                                            ↓ DOWN
+                                        </th>
+
+                                        <th>
+                                            ← LEFT
+                                        </th>
+
+                                        <th>
+                                            → RIGHT
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody id="qtableBody">
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =========================================================
+     EPISODE LOG
+========================================================= -->
+
+                <section class="panel">
+
+
+                    <div class="panel-header">
+
+                        <div class="panel-title">
+
+                            <div class="panel-icon">
+
+                                <i class="fa-solid fa-terminal"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Episode Activity
+                                </h2>
+
+                                <span>
+                Recent learning events
+            </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel-body">
+
+
+                        <div class="log" id="episodeLog">
+
+                            <div class="log-row">
+
+                                <span>
+            SYS
+        </span>
+
+                                <span>
+            READY
+        </span>
+
+                                <span>
+            AI
+        </span>
+
+                                <span>
+            Agent initialized successfully.
+        </span>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================================================
+     EXPLANATION
+========================================================= -->
+
+        <section id="about" style="margin-top:35px;">
+
+            <div class="panel-header" style="padding-left:0;border:none;">
+
+                <div class="panel-title">
+
+                    <div class="panel-icon">
+
+                        <i class="fa-solid fa-graduation-cap"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            How Reinforcement Learning Works
+                        </h2>
+
+                        <span>
+                Core concepts used by this simulation
+            </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="explanation">
+
+
+                <div class="explain-card">
+
+                    <div class="explain-icon">
+
+                        <i class="fa-solid fa-person-running"></i>
+
+                    </div>
+
+                    <h3>
+                        01 · Agent
+                    </h3>
+
+                    <p>
+
+                        The purple AI agent interacts with the environment. It observes its current state and chooses an action such as moving up, down, left or right.
+
+                    </p>
+
+                </div>
+
+
+                <div class="explain-card">
+
+                    <div class="explain-icon">
+
+                        <i class="fa-solid fa-coins"></i>
+
+                    </div>
+
+                    <h3>
+                        02 · Reward
+                    </h3>
+
+                    <p>
+
+                        The environment provides feedback. Reaching the goal produces a positive reward, while hitting obstacles or taking unnecessary steps produces penalties.
+
+                    </p>
+
+                </div>
+
+
+                <div class="explain-card">
+
+                    <div class="explain-icon">
+
+                        <i class="fa-solid fa-brain"></i>
+
+                    </div>
+
+                    <h3>
+                        03 · Q-Learning
+                    </h3>
+
+                    <p>
+
+                        The Q-table stores the expected value of each action. The agent repeatedly explores the environment and updates these values to learn a better policy.
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================================
+     FOOTER
+========================================================= -->
+
+    <footer>
+
+        <div class="footer-inner">
+
+            <div class="footer-copy">
+
+                © 2026 NeuroLearn AI Lab • Reinforcement Learning Simulator • HTML + CSS + JavaScript
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="#environment">
+            Environment
+        </a>
+
+                <a href="#training">
+            Training
+        </a>
+
+                <a href="#qtable">
+            Q-Table
+        </a>
+
+                <a href="#analytics">
+            Analytics
+        </a>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =========================================================
+     TOAST
+========================================================= -->
+
+    <div class="toast" id="toast">
+
+        Simulation message
+
+    </div>
+
+
+
+    <script>
+        /* =========================================================
+           REINFORCEMENT LEARNING CONFIGURATION
+        ========================================================= */
+
+
+        const GRID_SIZE = 10;
+
+        const ACTIONS = [
+
+            {
+                name: "UP",
+                row: -1,
+                col: 0
+            },
+
+            {
+                name: "DOWN",
+                row: 1,
+                col: 0
+            },
+
+            {
+                name: "LEFT",
+                row: 0,
+                col: -1
+            },
+
+            {
+                name: "RIGHT",
+                row: 0,
+                col: 1
+            }
+
+        ];
+
+
+        /* =========================================================
+           ENVIRONMENT
+        ========================================================= */
+
+
+        const startState = {
+            row: 0,
+            col: 0
+        };
+
+
+        const goalState = {
+            row: 9,
+            col: 9
+        };
+
+
+        let agent = {
+            row: 0,
+            col: 0
+        };
+
+
+        const obstacles = [
+
+            "1,2",
+            "1,3",
+            "1,4",
+
+            "2,4",
+
+            "3,1",
+            "3,2",
+            "3,3",
+
+            "4,6",
+            "4,7",
+
+            "5,1",
+
+            "6,1",
+            "6,2",
+            "6,3",
+
+            "6,7",
+            "6,8",
+
+            "7,5",
+
+            "8,5",
+            "8,6",
+            "8,7",
+
+            "3,7",
+            "2,7"
+
+        ];
+
+
+        const obstacleSet =
+            new Set(obstacles);
+
+
+        /* =========================================================
+           Q TABLE
+        ========================================================= */
+
+
+        let qTable = {};
+
+
+        function stateKey(row, col) {
+
+            return row + "," + col;
+
+        }
+
+
+        function createQTable() {
+
+            qTable = {};
+
+            for (
+                let row = 0; row < GRID_SIZE; row++
+            ) {
+
+                for (
+                    let col = 0; col < GRID_SIZE; col++
+                ) {
+
+                    qTable[
+                        stateKey(row, col)
+                    ] = [0, 0, 0, 0];
+
+                }
+
+            }
+
+        }
+
+
+        createQTable();
+
+
+        /* =========================================================
+           PARAMETERS
+        ========================================================= */
+
+
+        let learningRate = .7;
+
+        let discountFactor = .9;
+
+        let epsilon = .3;
+
+        let episodeLimit = 300;
+
+
+        /* =========================================================
+           TRAINING DATA
+        ========================================================= */
+
+
+        let episode = 0;
+
+        let successCount = 0;
+
+        let totalReward = 0;
+
+        let bestSteps = null;
+
+        let rewardHistory = [];
+
+        let running = false;
+
+        let animationTimer = null;
+
+
+        /* =========================================================
+           DOM
+        ========================================================= */
+
+
+        const gameGrid =
+            document.getElementById(
+                "gameGrid"
+            );
+
+
+        const qtableBody =
+            document.getElementById(
+                "qtableBody"
+            );
+
+
+        const episodeLog =
+            document.getElementById(
+                "episodeLog"
+            );
+
+
+        const progressFill =
+            document.getElementById(
+                "progressFill"
+            );
+
+
+        const progressText =
+            document.getElementById(
+                "progressText"
+            );
+
+
+        const trainingStatus =
+            document.getElementById(
+                "trainingStatus"
+            );
+
+
+        const currentReward =
+            document.getElementById(
+                "currentReward"
+            );
+
+
+        /* =========================================================
+           BUILD GRID
+        ========================================================= */
+
+
+        function buildGrid() {
+
+            gameGrid.innerHTML = "";
+
+
+            for (
+                let row = 0; row < GRID_SIZE; row++
+            ) {
+
+                for (
+                    let col = 0; col < GRID_SIZE; col++
+                ) {
+
+                    const cell =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    cell.className =
+                        "cell";
+
+
+                    const key =
+                        stateKey(row, col);
+
+
+                    cell.dataset.state =
+                        key;
+
+
+                    if (
+                        obstacleSet.has(key)
+                    ) {
+
+                        cell.classList.add(
+                            "obstacle"
+                        );
+
+                        cell.innerHTML =
+                            '<i class="fa-solid fa-xmark"></i>';
+
+                    }
+
+
+                    if (
+                        row === goalState.row &&
+                        col === goalState.col
+                    ) {
+
+                        cell.classList.add(
+                            "goal"
+                        );
+
+                        cell.innerHTML =
+                            '<i class="fa-solid fa-flag-checkered"></i>';
+
+                    }
+
+
+                    if (
+                        row === startState.row &&
+                        col === startState.col
+                    ) {
+
+                        cell.classList.add(
+                            "start"
+                        );
+
+                        if (
+                            key !== stateKey(
+                                agent.row,
+                                agent.col
+                            )
+                        ) {
+
+                            cell.innerHTML =
+                                '<i class="fa-solid fa-house"></i>';
+
+                        }
+
+                    }
+
+
+                    gameGrid.appendChild(
+                        cell
+                    );
+
+                }
+
+            }
+
+
+            renderAgent();
+
+        }
+
+
+        /* =========================================================
+           RENDER AGENT
+        ========================================================= */
+
+
+        function renderAgent() {
+
+            document
+                .querySelectorAll(".cell")
+                .forEach(
+                    cell => {
+
+                        cell.classList.remove(
+                            "agent"
+                        );
+
+                        const key =
+                            cell.dataset.state;
+
+
+                        if (
+                            obstacleSet.has(key)
+                        ) {
+
+                            cell.innerHTML =
+                                '<i class="fa-solid fa-xmark"></i>';
+
+                        } else if (
+                            key ===
+                            stateKey(
+                                goalState.row,
+                                goalState.col
+                            )
+                        ) {
+
+                            cell.innerHTML =
+                                '<i class="fa-solid fa-flag-checkered"></i>';
+
+                        } else if (
+                            key ===
+                            stateKey(
+                                startState.row,
+                                startState.col
+                            )
+                        ) {
+
+                            cell.innerHTML =
+                                '<i class="fa-solid fa-house"></i>';
+
+                        } else {
+
+                            cell.innerHTML = "";
+
+                        }
+
+                    }
+                );
+
+
+            const current =
+                document.querySelector(
+                    `[data-state="${stateKey(
+                agent.row,
+                agent.col
+            )}"]`
+                );
+
+
+            if (current) {
+
+                current.classList.add(
+                    "agent"
+                );
+
+                current.innerHTML =
+                    '<i class="fa-solid fa-robot agent-icon"></i>';
+
+            }
+
+        }
+
+
+        /* =========================================================
+           VALIDATE MOVE
+        ========================================================= */
+
+
+        function isValidPosition(row, col) {
+
+            if (
+                row < 0 ||
+                row >= GRID_SIZE ||
+                col < 0 ||
+                col >= GRID_SIZE
+            ) {
+
+                return false;
+
+            }
+
+
+            if (
+                obstacleSet.has(
+                    stateKey(row, col)
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            return true;
+
+        }
+
+
+        /* =========================================================
+           GET ACTION
+        ========================================================= */
+
+
+        function chooseAction(row, col) {
+
+            const state =
+                qTable[
+                    stateKey(row, col)
+                ];
+
+
+            if (
+                Math.random() < epsilon
+            ) {
+
+                return Math.floor(
+                    Math.random() *
+                    ACTIONS.length
+                );
+
+            }
+
+
+            let max =
+                Math.max(...state);
+
+
+            let candidates = [];
+
+
+            state.forEach(
+                (value, index) => {
+
+                    if (
+                        value === max
+                    ) {
+
+                        candidates.push(
+                            index
+                        );
+
+                    }
+
+                }
+            );
+
+
+            return candidates[
+                Math.floor(
+                    Math.random() *
+                    candidates.length
+                )
+            ];
+
+        }
+
+
+        /* =========================================================
+           GET REWARD
+        ========================================================= */
+
+
+        function getReward(row, col) {
+
+            if (
+                row === goalState.row &&
+                col === goalState.col
+            ) {
+
+                return 100;
+
+            }
+
+
+            return -1;
+
+        }
+
+
+        /* =========================================================
+           TRAIN ONE EPISODE
+        ========================================================= */
+
+
+        function trainOneEpisode() {
+
+            if (
+                episode >= episodeLimit
+            ) {
+
+                showToast(
+                    "🏁 Training limit reached. Increase the episode limit or reset."
+                );
+
+                return;
+
+            }
+
+
+            agent = {
+                row: startState.row,
+                col: startState.col
+            };
+
+
+            let totalEpisodeReward = 0;
+
+            let steps = 0;
+
+            let finished = false;
+
+
+            const maxSteps = 200;
+
+
+            while (
+                steps < maxSteps
+            ) {
+
+                const state =
+                    stateKey(
+                        agent.row,
+                        agent.col
+                    );
+
+
+                const action =
+                    chooseAction(
+                        agent.row,
+                        agent.col
+                    );
+
+
+                const move =
+                    ACTIONS[action];
+
+
+                let nextRow =
+                    agent.row +
+                    move.row;
+
+
+                let nextCol =
+                    agent.col +
+                    move.col;
+
+
+                let valid =
+                    isValidPosition(
+                        nextRow,
+                        nextCol
+                    );
+
+
+                let reward;
+
+
+                if (!valid) {
+
+                    reward = -10;
+
+                    nextRow =
+                        agent.row;
+
+                    nextCol =
+                        agent.col;
+
+                } else {
+
+                    reward =
+                        getReward(
+                            nextRow,
+                            nextCol
+                        );
+
+                }
+
+
+                const nextState =
+                    stateKey(
+                        nextRow,
+                        nextCol
+                    );
+
+
+                const maxNext =
+                    Math.max(
+                        ...qTable[nextState]
+                    );
+
+
+                qTable[state][action] +=
+
+                    learningRate *
+                    (
+                        reward +
+                        discountFactor *
+                        maxNext -
+                        qTable[state][action]
+                    );
+
+
+                agent.row =
+                    nextRow;
+
+                agent.col =
+                    nextCol;
+
+
+                totalEpisodeReward +=
+                    reward;
+
+
+                steps++;
+
+
+                if (
+                    agent.row === goalState.row &&
+                    agent.col === goalState.col
+                ) {
+
+                    finished = true;
+
+                    break;
+
+                }
+
+            }
+
+
+            episode++;
+
+            totalReward +=
+                totalEpisodeReward;
+
+
+            if (finished) {
+
+                successCount++;
+
+                if (
+                    bestSteps === null ||
+                    steps < bestSteps
+                ) {
+
+                    bestSteps = steps;
+
+                }
+
+            }
+
+
+            rewardHistory.push(
+                totalEpisodeReward
+            );
+
+
+            if (
+                rewardHistory.length > 100
+            ) {
+
+                rewardHistory.shift();
+
+            }
+
+
+            currentReward.textContent =
+                totalEpisodeReward;
+
+
+            document.getElementById(
+                    "episodes"
+                ).textContent =
+                episode;
+
+
+            document.getElementById(
+                    "successRate"
+                ).textContent =
+                Math.round(
+                    successCount /
+                    episode *
+                    100
+                ) + "%";
+
+
+            document.getElementById(
+                    "avgReward"
+                ).textContent =
+                (
+                    totalReward /
+                    episode
+                ).toFixed(2);
+
+
+            document.getElementById(
+                    "bestSteps"
+                ).textContent =
+                bestSteps === null ?
+                "--" :
+                bestSteps;
+
+
+            const progress =
+                Math.min(
+                    100,
+                    episode /
+                    episodeLimit *
+                    100
+                );
+
+
+            progressFill.style.width =
+                progress + "%";
+
+
+            progressText.textContent =
+                Math.round(progress) + "%";
+
+
+            document.getElementById(
+                    "episodeBadge"
+                ).textContent =
+                episode;
+
+
+            addLog(
+                episode,
+                totalEpisodeReward,
+                steps,
+                finished
+            );
+
+
+            updateQTable();
+
+            drawChart();
+
+
+            agent = {
+                row: startState.row,
+                col: startState.col
+            };
+
+
+            renderAgent();
+
+        }
+
+
+        /* =========================================================
+           AUTO TRAIN
+        ========================================================= */
+
+
+        function startTraining() {
+
+            if (running) {
+
+                stopTraining();
+
+                return;
+
+            }
+
+
+            if (
+                episode >= episodeLimit
+            ) {
+
+                showToast(
+                    "Training completed. Press Reset to train again."
+                );
+
+                return;
+
+            }
+
+
+            running = true;
+
+
+            trainingStatus.textContent =
+                "Training...";
+
+
+            trainingStatus.style.color =
+                "#4ade80";
+
+
+            const button =
+                document.querySelector(
+                    ".control-btn.success"
+                );
+
+
+            button.innerHTML =
+                '<i class="fa-solid fa-pause"></i> Pause';
+
+
+            function loop() {
+
+                if (!running) {
+
+                    return;
+
+                }
+
+
+                if (
+                    episode >= episodeLimit
+                ) {
+
+                    stopTraining();
+
+                    showToast(
+                        "🏆 Training completed successfully."
+                    );
+
+                    return;
+
+                }
+
+
+                for (
+                    let i = 0; i < 5 &&
+                    episode < episodeLimit; i++
+                ) {
+
+                    trainOneEpisode();
+
+                }
+
+
+                animationTimer =
+                    setTimeout(
+                        loop,
+                        80
+                    );
+
+            }
+
+
+            loop();
+
+        }
+
+
+        /* =========================================================
+           STOP TRAINING
+        ========================================================= */
+
+
+        function stopTraining() {
+
+            running = false;
+
+
+            clearTimeout(
+                animationTimer
+            );
+
+
+            trainingStatus.textContent =
+                "Paused";
+
+
+            trainingStatus.style.color =
+                "#fbbf24";
+
+
+            const button =
+                document.querySelector(
+                    ".control-btn.success"
+                );
+
+
+            button.innerHTML =
+                '<i class="fa-solid fa-bolt"></i> Auto Train';
+
+        }
+
+
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+
+        function resetTraining() {
+
+            stopTraining();
+
+
+            createQTable();
+
+
+            episode = 0;
+
+            successCount = 0;
+
+            totalReward = 0;
+
+            bestSteps = null;
+
+            rewardHistory = [];
+
+
+            agent = {
+                row: startState.row,
+                col: startState.col
+            };
+
+
+            document.getElementById(
+                    "episodes"
+                ).textContent =
+                "0";
+
+
+            document.getElementById(
+                    "successRate"
+                ).textContent =
+                "0%";
+
+
+            document.getElementById(
+                    "avgReward"
+                ).textContent =
+                "0.00";
+
+
+            document.getElementById(
+                    "bestSteps"
+                ).textContent =
+                "--";
+
+
+            currentReward.textContent =
+                "0";
+
+
+            progressFill.style.width =
+                "0%";
+
+
+            progressText.textContent =
+                "0%";
+
+
+            document.getElementById(
+                    "episodeBadge"
+                ).textContent =
+                "0";
+
+
+            trainingStatus.textContent =
+                "Idle";
+
+
+            trainingStatus.style.color =
+                "#64748b";
+
+
+            episodeLog.innerHTML =
+                "";
+
+
+            addLog(
+                "SYS",
+                "RESET",
+                "AI",
+                "Q-table and environment reset."
+            );
+
+
+            buildGrid();
+
+            updateQTable();
+
+            drawChart();
+
+
+            showToast(
+                "🔄 Training environment has been reset."
+            );
+
+        }
+
+
+        /* =========================================================
+           BEST PATH
+        ========================================================= */
+
+
+        function runBestPath() {
+
+            if (
+                episode === 0
+            ) {
+
+                showToast(
+                    "⚠️ Train the agent first."
+                );
+
+                return;
+
+            }
+
+
+            stopTraining();
+
+
+            let row =
+                startState.row;
+
+            let col =
+                startState.col;
+
+
+            let path = [];
+
+
+            const visited =
+                new Set();
+
+
+            for (
+                let step = 0; step < 100; step++
+            ) {
+
+                path.push({
+                    row,
+                    col
+                });
+
+
+                if (
+                    row === goalState.row &&
+                    col === goalState.col
+                ) {
+
+                    break;
+
+                }
+
+
+                const key =
+                    stateKey(row, col);
+
+
+                if (
+                    visited.has(key)
+                ) {
+
+                    break;
+
+                }
+
+
+                visited.add(key);
+
+
+                const values =
+                    qTable[key];
+
+
+                let best =
+                    values.indexOf(
+                        Math.max(...values)
+                    );
+
+
+                let nextRow =
+                    row +
+                    ACTIONS[best].row;
+
+
+                let nextCol =
+                    col +
+                    ACTIONS[best].col;
+
+
+                if (!isValidPosition(
+                        nextRow,
+                        nextCol
+                    )) {
+
+                    let alternatives = [0, 1, 2, 3]
+                        .filter(
+                            index =>
+                            isValidPosition(
+                                row +
+                                ACTIONS[index].row,
+                                col +
+                                ACTIONS[index].col
+                            )
+                        )
+                        .sort(
+                            (a, b) =>
+                            values[b] -
+                            values[a]
+                        );
+
+
+                    if (
+                        alternatives.length === 0
+                    ) {
+
+                        break;
+
+                    }
+
+
+                    best =
+                        alternatives[0];
+
+
+                    nextRow =
+                        row +
+                        ACTIONS[best].row;
+
+
+                    nextCol =
+                        col +
+                        ACTIONS[best].col;
+
+                }
+
+
+                row =
+                    nextRow;
+
+                col =
+                    nextCol;
+
+            }
+
+
+            animatePath(
+                path
+            );
+
+        }
+
+
+        /* =========================================================
+           ANIMATE PATH
+        ========================================================= */
+
+
+        function animatePath(path) {
+
+            let index = 0;
+
+
+            function next() {
+
+                if (
+                    index >= path.length
+                ) {
+
+                    agent = {
+                        row: startState.row,
+                        col: startState.col
+                    };
+
+
+                    renderAgent();
+
+
+                    showToast(
+                        "🚀 Best learned path completed."
+                    );
+
+                    return;
+
+                }
+
+
+                agent = {
+                    row: path[index].row,
+                    col: path[index].col
+                };
+
+
+                renderAgent();
+
+
+                index++;
+
+
+                setTimeout(
+                    next,
+                    180
+                );
+
+            }
+
+
+            next();
+
+        }
+
+
+        /* =========================================================
+           LOG
+        ========================================================= */
+
+
+        function addLog(
+            ep,
+            reward,
+            steps,
+            success
+        ) {
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className =
+                "log-row";
+
+
+            const successText =
+                success ?
+                "GOAL" :
+                "EXPLORE";
+
+
+            const successClass =
+                success ?
+                "log-success" :
+                "";
+
+
+            row.innerHTML = `
+
+        <span>
+            ${ep}
+        </span>
+
+        <span>
+            ${reward}
+        </span>
+
+        <span class="${successClass}">
+            ${successText}
+        </span>
+
+        <span>
+            ${success
+                ? "🎯 Agent reached the target."
+                : "🧠 Agent updated its Q-values."
+            }
+        </span>
+
+    `;
+
+
+            episodeLog.prepend(
+                row
+            );
+
+
+            while (
+                episodeLog.children.length > 20
+            ) {
+
+                episodeLog.removeChild(
+                    episodeLog.lastChild
+                );
+
+            }
+
+        }
+
+
+        /* =========================================================
+           UPDATE Q TABLE
+        ========================================================= */
+
+
+        function updateQTable() {
+
+            qtableBody.innerHTML =
+                "";
+
+
+            const importantStates = [
+
+                [0, 0],
+                [0, 1],
+                [1, 1],
+                [2, 1],
+                [2, 2],
+                [4, 4],
+                [5, 5],
+                [7, 7],
+                [8, 8],
+                [9, 8]
+
+            ];
+
+
+            importantStates.forEach(
+                ([row, col]) => {
+
+                    const tr =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    const key =
+                        stateKey(
+                            row, col
+                        );
+
+
+                    const values =
+                        qTable[key];
+
+
+                    const max =
+                        Math.max(
+                            ...values
+                        );
+
+
+                    let html = `
+
+                <td>
+                    (${row},${col})
+                </td>
+
+            `;
+
+
+                    values.forEach(
+                        value => {
+
+                            let className =
+                                "";
+
+
+                            if (
+                                value > 0
+                            ) {
+
+                                className =
+                                    "q-positive";
+
+                            } else if (
+                                value < 0
+                            ) {
+
+                                className =
+                                    "q-negative";
+
+                            }
+
+
+                            if (
+                                value === max &&
+                                max !== 0
+                            ) {
+
+                                className +=
+                                    " q-best";
+
+                            }
+
+
+                            html += `
+
+                        <td class="${className}">
+
+                            ${value.toFixed(2)}
+
+                        </td>
+
+                    `;
+
+                        }
+                    );
+
+
+                    tr.innerHTML =
+                        html;
+
+
+                    qtableBody.appendChild(
+                        tr
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =========================================================
+           CHART
+        ========================================================= */
+
+
+        const canvas =
+            document.getElementById(
+                "rewardChart"
+            );
+
+
+        const ctx =
+            canvas.getContext(
+                "2d"
+            );
+
+
+        function resizeCanvas() {
+
+            const rect =
+                canvas.getBoundingClientRect();
+
+
+            canvas.width =
+                rect.width *
+                window.devicePixelRatio;
+
+
+            canvas.height =
+                rect.height *
+                window.devicePixelRatio;
+
+
+            ctx.scale(
+                window.devicePixelRatio,
+                window.devicePixelRatio
+            );
+
+        }
+
+
+        function drawChart() {
+
+            const width =
+                canvas.clientWidth;
+
+
+            const height =
+                canvas.clientHeight;
+
+
+            ctx.clearRect(
+                0,
+                0,
+                width,
+                height
+            );
+
+
+            /* GRID */
+
+            ctx.strokeStyle =
+                "rgba(148,163,184,.08)";
+
+
+            ctx.lineWidth =
+                1;
+
+
+            for (
+                let i = 0; i < 5; i++
+            ) {
+
+                const y =
+                    i *
+                    height /
+                    4;
+
+
+                ctx.beginPath();
+
+                ctx.moveTo(
+                    0,
+                    y
+                );
+
+                ctx.lineTo(
+                    width,
+                    y
+                );
+
+                ctx.stroke();
+
+            }
+
+
+            if (
+                rewardHistory.length < 2
+            ) {
+
+                return;
+
+            }
+
+
+            const min =
+                Math.min(
+                    ...rewardHistory
+                );
+
+
+            const max =
+                Math.max(
+                    ...rewardHistory
+                );
+
+
+            const range =
+                max - min || 1;
+
+
+            ctx.beginPath();
+
+
+            rewardHistory.forEach(
+                (reward, index) => {
+
+                    const x =
+                        index *
+                        width /
+                        (rewardHistory.length - 1);
+
+
+                    const y =
+                        height -
+                        (
+                            (reward - min) /
+                            range
+                        ) *
+                        (
+                            height - 20
+                        ) -
+                        10;
+
+
+                    if (
+                        index === 0
+                    ) {
+
+                        ctx.moveTo(
+                            x,
+                            y
+                        );
+
+                    } else {
+
+                        ctx.lineTo(
+                            x,
+                            y
+                        );
+
+                    }
+
+                }
+            );
+
+
+            ctx.strokeStyle =
+                "#8b5cf6";
+
+
+            ctx.lineWidth =
+                2;
+
+
+            ctx.stroke();
+
+
+            /* AREA */
+
+            const gradient =
+                ctx.createLinearGradient(
+                    0,
+                    0,
+                    0,
+                    height
+                );
+
+
+            gradient.addColorStop(
+                0,
+                "rgba(139,92,246,.25)"
+            );
+
+
+            gradient.addColorStop(
+                1,
+                "rgba(139,92,246,0)"
+            );
+
+
+            ctx.lineTo(
+                width,
+                height
+            );
+
+
+            ctx.lineTo(
+                0,
+                height
+            );
+
+
+            ctx.closePath();
+
+
+            ctx.fillStyle =
+                gradient;
+
+
+            ctx.fill();
+
+        }
+
+
+        /* =========================================================
+           RANGE INPUTS
+        ========================================================= */
+
+
+        const learningRateInput =
+            document.getElementById(
+                "learningRate"
+            );
+
+
+        const discountFactorInput =
+            document.getElementById(
+                "discountFactor"
+            );
+
+
+        const epsilonInput =
+            document.getElementById(
+                "epsilon"
+            );
+
+
+        const episodeLimitInput =
+            document.getElementById(
+                "episodeLimit"
+            );
+
+
+        learningRateInput.addEventListener(
+            "input",
+            function() {
+
+                learningRate =
+                    Number(this.value);
+
+
+                document.getElementById(
+                        "learningRateValue"
+                    ).textContent =
+                    learningRate.toFixed(2);
+
+            }
+        );
+
+
+        discountFactorInput.addEventListener(
+            "input",
+            function() {
+
+                discountFactor =
+                    Number(this.value);
+
+
+                document.getElementById(
+                        "discountFactorValue"
+                    ).textContent =
+                    discountFactor.toFixed(2);
+
+            }
+        );
+
+
+        epsilonInput.addEventListener(
+            "input",
+            function() {
+
+                epsilon =
+                    Number(this.value);
+
+
+                document.getElementById(
+                        "epsilonValue"
+                    ).textContent =
+                    epsilon.toFixed(2);
+
+            }
+        );
+
+
+        episodeLimitInput.addEventListener(
+            "input",
+            function() {
+
+                episodeLimit =
+                    Number(this.value);
+
+
+                document.getElementById(
+                        "episodeLimitValue"
+                    ).textContent =
+                    episodeLimit;
+
+            }
+        );
+
+
+        /* =========================================================
+           TOAST
+        ========================================================= */
+
+
+        let toastTimer;
+
+
+        function showToast(message) {
+
+            const toast =
+                document.getElementById(
+                    "toast"
+                );
+
+
+            toast.textContent =
+                message;
+
+
+            toast.classList.add(
+                "show"
+            );
+
+
+            clearTimeout(
+                toastTimer
+            );
+
+
+            toastTimer =
+                setTimeout(
+                    () => {
+
+                        toast.classList.remove(
+                            "show"
+                        );
+
+                    },
+                    2500
+                );
+
+        }
+
+
+        /* =========================================================
+           INITIALIZATION
+        ========================================================= */
+
+
+        buildGrid();
+
+        updateQTable();
+
+        resizeCanvas();
+
+        drawChart();
+
+
+        window.addEventListener(
+            "resize",
+            function() {
+
+                resizeCanvas();
+
+                drawChart();
+
+            }
+        );
+
+
+        /* =========================================================
+           KEYBOARD SHORTCUT
+        ========================================================= */
+
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.code === "Space"
+                ) {
+
+                    event.preventDefault();
+
+                    trainOneEpisode();
+
+                }
+
+            }
+        );
+    </script>
+
+</body>
+
+</html>
